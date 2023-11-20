@@ -1,0 +1,91 @@
+1, public static <T> Group<T> copy(Group<T> group) {
+    List<T> elements = new ArrayList<>(group.getElements());
+    Group<T> grp = new Group<>(group.getSpecialElement(), elements);
+    return grp;
+}
+
+
+
+
+2, import java.util.*;
+
+public class SecondSmallestElement {
+
+    public static <T extends Comparable<? super T>> T secondSmallest(List<T> list) {
+        if (list == null || list.size() < 2) {
+            throw new IllegalArgumentException("List should contain at least two elements");
+        }
+
+        T smallest = list.get(0);
+        T secondSmallest = list.get(1);
+
+        if (smallest.compareTo(secondSmallest) > 0) {
+            T temp = smallest;
+            smallest = secondSmallest;
+            secondSmallest = temp;
+        }
+
+        for (int i = 2; i < list.size(); i++) {
+            T current = list.get(i);
+            if (current.compareTo(smallest) < 0) {
+                secondSmallest = smallest;
+                smallest = current;
+            } else if (current.compareTo(secondSmallest) < 0 && current.compareTo(smallest) != 0) {
+                secondSmallest = current;
+            }
+        }
+
+        return secondSmallest;
+    }
+
+    public static void main(String[] args) {
+        // Example usage:
+        List<Integer> intList = Arrays.asList(5, 2, 9, 1, 7);
+        Integer secondSmallestInt = secondSmallest(intList);
+        System.out.println("Second smallest integer: " + secondSmallestInt);
+
+        List<Double> doubleList = Arrays.asList(5.6, 2.3, 9.8, 1.2, 7.4);
+        Double secondSmallestDouble = secondSmallest(doubleList);
+        System.out.println("Second smallest double: " + secondSmallestDouble);
+
+        List<String> stringList = Arrays.asList("apple", "orange", "banana", "pear");
+        String secondSmallestString = secondSmallest(stringList);
+        System.out.println("Second smallest string: " + secondSmallestString);
+    }
+}
+
+3, public static <T> boolean contains(List<T> list, T element) {
+    for (T item : list) {
+        if (item == null && element == null) {
+            return true;
+        }
+        if (element == null || item == null) {
+            continue;
+        }
+        if (item.equals(element)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+public static void test() {
+    List<String> stringList = Arrays.asList("Bob", "Joe", "Tom");
+    boolean stringResult = contains(stringList, "Tom");
+    System.out.println("Contains 'Tom' in stringList: " + stringResult);
+
+    List<Integer> intList = Arrays.asList(1, 2, 3, 4, 5);
+    boolean intResult = contains(intList, 3);
+    System.out.println("Contains '3' in intList: " + intResult);
+
+    // Example with custom class (e.g., Employee)
+    List<Employee> employeeList = Arrays.asList(
+        new Employee("Alice", 25),
+        new Employee("Bob", 30),
+        new Employee("Charlie", 28)
+    );
+    Employee searchEmployee = new Employee("Bob", 30);
+    boolean employeeResult = contains(employeeList, searchEmployee);
+    System.out.println("Contains 'Bob' in employeeList: " + employeeResult);
+}
